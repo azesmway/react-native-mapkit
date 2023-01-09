@@ -1,4 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
+import React from 'react';
 
 const LINKING_ERROR =
   `The package 'react-native-mapkit' doesn't seem to be linked. Make sure: \n\n` +
@@ -6,8 +7,8 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
 
-const Mapkit = NativeModules.Mapkit
-  ? NativeModules.Mapkit
+const Mapkit = NativeModules.RNMapkit
+  ? NativeModules.RNMapkit
   : new Proxy(
       {},
       {
@@ -17,6 +18,20 @@ const Mapkit = NativeModules.Mapkit
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return Mapkit.multiply(a, b);
+export default class MapView extends React.Component {
+  static defaultProps = {};
+
+  constructor(props: {} | Readonly<{}>) {
+    super(props);
+  }
+
+  private getProps() {
+    return {
+      ...this.props,
+    };
+  }
+
+  public render() {
+    return <Mapkit {...this.getProps()} />;
+  }
 }
